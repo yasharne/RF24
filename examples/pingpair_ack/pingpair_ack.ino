@@ -19,9 +19,14 @@
 #include "RF24.h"
 #include "printf.h"
 
+<<<<<<< HEAD
 // Hardware configuration: Set up nRF24L01 radio on SPI bus plus pins CE 8, CSN 9
 // This is for UNO Adapter, pin 10 is Vcc
 RF24 radio(8,9);
+=======
+// Hardware configuration: Set up nRF24L01 radio on SPI bus plus pins 7 & 8 
+RF24 radio(7,8);
+>>>>>>> a0c808751c4239d5c692588b6730f5fbda7c6954
 
 // Topology
 const uint64_t pipes[2] = { 0xABCDABCD71LL, 0x544d52687CLL };              // Radio pipe addresses for the 2 nodes to communicate.

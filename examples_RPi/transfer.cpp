@@ -32,6 +32,9 @@ using namespace std;
 // Setup for GPIO 22 CE and CE0 CSN with SPI Speed @ 4Mhz
 //RF24 radio(RPI_V2_GPIO_P1_15, BCM2835_SPI_CS0, BCM2835_SPI_SPEED_4MHZ);
 
+// NEW: Setup for RPi B+
+//RF24 radio(RPI_BPLUS_GPIO_J8_15,RPI_BPLUS_GPIO_J8_24, BCM2835_SPI_SPEED_8MHZ);
+
 // Setup for GPIO 22 CE and CE0 CSN with SPI Speed @ 8Mhz
 RF24 radio(RPI_V2_GPIO_P1_15, RPI_V2_GPIO_P1_24, BCM2835_SPI_SPEED_8MHZ);
 
@@ -80,11 +83,12 @@ int main(int argc, char** argv){
 /***********************************/
 
     if ( role == role_ping_out )    {
-      radio.openWritingPipe(addresses[0]);
-      radio.openReadingPipe(1,addresses[1]);
-    } else {
       radio.openWritingPipe(addresses[1]);
       radio.openReadingPipe(1,addresses[0]);
+	  radio.stopListening();
+    } else {
+      radio.openWritingPipe(addresses[0]);
+      radio.openReadingPipe(1,addresses[1]);
       radio.startListening();
     }
 
@@ -110,6 +114,7 @@ int main(int argc, char** argv){
       			if(!radio.writeFast(&data,32)){     //Write to the FIFO buffers
         			counter++;                      //Keep count of failed payloads
       			}
+
 				
 				//This is only required when NO ACK ( enableAutoAck(0) ) payloads are used
 		/*		if(millis() - pauseTime > 3){       // Need to drop out of TX mode every 4ms if sending a steady stream of multicast data
